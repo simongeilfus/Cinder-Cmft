@@ -1,6 +1,8 @@
 #version 150
 
 uniform samplerCube uSampler;
+uniform float 		uExposure;
+uniform float 		uWhiteLevel;
 in vec3				vNormal;
 out vec4 			oColor;
 
@@ -25,9 +27,9 @@ void main()
 	vec3 color 	= skybox;
 
 	// apply the tone-mapping
-	color		= Uncharted2Tonemap( color );
+	color		= Uncharted2Tonemap( color * uExposure );
 	// white balance
-	color		= color * ( 1.0f / Uncharted2Tonemap( vec3( 1.5f ) ) );
+	color		= color * ( 1.0f / Uncharted2Tonemap( vec3( uWhiteLevel ) ) );
 	// gamma correction 
 	color 		= pow( color, vec3( 1.0 / 2.2 ) );
 	oColor 		= vec4( color, 1.0f );
