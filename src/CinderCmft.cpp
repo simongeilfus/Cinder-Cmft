@@ -9,33 +9,6 @@ using namespace std;
 
 namespace cmft {
 
-namespace {
-
-	void convertToCubeMap( cmft::Image &image ) 
-	{
-		if( ! cmft::imageIsCubemap( image ) ) {
-			if( cmft::imageIsCubeCross( image ) ) {
-				cmft::imageCubemapFromCross( image );
-			}
-			else if( cmft::imageIsLatLong( image ) ) {
-				cmft::imageCubemapFromLatLong( image );
-			}
-			else if( cmft::imageIsHStrip( image ) )	{
-				cmft::imageCubemapFromStrip( image );
-			}
-			else if( cmft::imageIsVStrip( image ) ) {
-				cmft::imageCubemapFromStrip( image );
-			}
-			else if( cmft::imageIsOctant( image ) )	{
-				cmft::imageCubemapFromOctant( image );
-			}
-			else if( ! cmft::imageCubemapFromCross( image ) ) {
-				app::console() << "problem converting!!!!" << endl;
-			}
-		}
-	}
-} // anonymous namespace
-
 cmft::Image surfaceToImage( const ci::Surface &surface )
 {
 	cmft::Image img;
@@ -43,12 +16,46 @@ cmft::Image surfaceToImage( const ci::Surface &surface )
 	memcpy( img.m_data, (void*) surface.getData(), img.m_dataSize );
 	return img;
 }
+cmft::Image textureCubemapToImage( const ci::gl::TextureCubeMapRef &cubemap )
+{
+	cmft::Image img;
+	assert( false );
+	//cmft::imageCubemapFromFaceList();
+	//cmft::imageCreate( img, surface.getWidth(), surface.getHeight(), 0x000000ff, 1, 1, surface.hasAlpha() ? cmft::TextureFormat::RGBA8 : cmft::TextureFormat::RGB8 );
+	//memcpy( img.m_data, (void*) surface.getData(), img.m_dataSize );
+	return img;
+}
 
-ci::gl::TextureCubeMapRef createTextureCubeMap( const cmft::Image &image )
+void convertToCubemap( cmft::Image &image ) 
+{
+	if( ! cmft::imageIsCubemap( image ) ) {
+		if( cmft::imageIsCubeCross( image ) ) {
+			app::console() << "Image is CubeCross" << endl;
+			cmft::imageCubemapFromCross( image );
+		}
+		else if( cmft::imageIsLatLong( image ) ) {
+			app::console() << "Image is LatLong" << endl;
+			cmft::imageCubemapFromLatLong( image );
+		}
+		else if( cmft::imageIsHStrip( image ) || cmft::imageIsVStrip( image ) )	{
+			app::console() << "Image is Strip" << endl;
+			cmft::imageCubemapFromStrip( image );
+		}
+		else if( cmft::imageIsOctant( image ) )	{
+			app::console() << "Image is Octant" << endl;
+			cmft::imageCubemapFromOctant( image );
+		}
+		else if( ! cmft::imageCubemapFromCross( image ) ) {
+			app::console() << "problem converting!!!!" << endl;
+		}
+	}
+}
+
+ci::gl::TextureCubeMapRef createTextureCubemap( cmft::Image &image )
 {
 	// Input check.
     if( ! imageIsCubemap( image ) ) {
-        return gl::TextureCubeMapRef();
+        convertToCubemap( image );
     }
 
     // Get destination sizes and offsets.
@@ -144,11 +151,24 @@ ci::gl::TextureCubeMapRef createTextureCubeMap( const cmft::Image &image )
 	return cubemap;
 }
 
-
-
-RadianceFilterOptions& RadianceFilterOptions::enableCaching( bool cache )
+ci::gl::TextureCubeMapRef createTextureCubemap( const ci::fs::path &filePath )
 {
-	mCacheEnabled = cache;
+	cmft::Image input;
+	bool imageLoaded = cmft::imageLoad( input, filePath.string().c_str(), cmft::TextureFormat::RGBA32F )
+					|| cmft::imageLoadStb( input, filePath.string().c_str(), cmft::TextureFormat::RGBA32F );
+	
+	if( ! imageLoaded ) {
+		app::console() << "Problem loading Image" << endl;
+	}
+
+	return createTextureCubemap( input );
+}
+
+
+RadianceFilterOptions& RadianceFilterOptions::gammaCorrection( float gammaInput, float gammaOutput )
+{
+	mGammaInput = gammaInput;
+	mGammaOutput = gammaOutput;
 	return *this;
 }
 RadianceFilterOptions& RadianceFilterOptions::lightingModel( LightingModel::Enum model )
@@ -187,107 +207,160 @@ RadianceFilterOptions& RadianceFilterOptions::excludeBase( bool exclude )
 	return *this;
 }
 
-IrradianceFilterOptions& IrradianceFilterOptions::enableCaching( bool cache )
+cmft::Image createPmrem( cmft::Image &input, uint32_t dstFaceSize, const RadianceFilterOptions &options )
 {
-	mCacheEnabled = cache;
-	return *this;
+	// prepare input / output
+	if( ! cmft::imageIsCubemap( input ) ) {
+		convertToCubemap( input );
+	}
+	cmft::Image output;	
+	cmft::imageCreate( output, dstFaceSize, dstFaceSize, 0xff0000ff, 7, 6, cmft::TextureFormat::RGBA32F );
+
+	// create the opencl context
+	cmft::ClContext clContext;
+		
+	int32_t clLoaded = bx::clLoad();
+	if( clLoaded ) {
+		cmft::clPrintDevices();
+		clContext.init( CMFT_CL_VENDOR_ANY_GPU, CMFT_CL_DEVICE_TYPE_GPU );
+	}
+	else {
+		app::console() << "Problem initializing OpenCL Context." << endl;
+	}
+
+	if( input.m_width != dstFaceSize ) {
+		cmft::imageResize( input, dstFaceSize );
+	}
+
+	// apply the filter
+	cmft::imageApplyGamma( input, options.mGammaInput );
+	cmft::imageRadianceFilter( output, dstFaceSize, cmft::LightingModel::BlinnBrdf, options.mExcludeBase, options.mMipCount, options.mGlossScale, options.mGlossBias, input, options.mEdgeFixup, options.mNumCpuProcessingThreads, &clContext );
+	cmft::imageApplyGamma( output, options.mGammaOutput );
+		
+	// Release OpenCL context and image memory
+	clContext.destroy();
+	if( clLoaded ) {
+		bx::clUnload();
+	}
+	
+	return output;
 }
 
+ci::gl::TextureCubeMapRef createPmrem( const ci::Surface &source, uint32_t dstFaceSize, const RadianceFilterOptions &options )
+{
+	auto input = surfaceToImage( source );
+	auto output = createPmrem( input, dstFaceSize, options );
+	
+	// generate the opengl cubemap texture
+	auto outputTex = createTextureCubemap( output ); 
+	
+	// Release output image memory
+	cmft::imageUnload( output );
+	cmft::imageUnload( input );
 
-ci::gl::TextureCubeMapRef createPmrem( const ci::DataSourceRef &source, uint32_t dstFaceSize, const RadianceFilterOptions &options )
+	return outputTex;
+}
+ci::gl::TextureCubeMapRef createPmrem( const ci::fs::path &filePath, uint32_t dstFaceSize, const RadianceFilterOptions &options, bool cacheEnabled )
 {
 	cmft::Image output;
 
 	// if caching is enabled check whether the results have already been calculated
-	auto filePath = source->getFilePath();
 	auto cachePath = filePath.parent_path() / ( filePath.filename().stem().string() + "_pmrem.dds" );
-	if( options.mCacheEnabled && fs::exists( cachePath ) ) {
-		cmft::imageLoad( output, cachePath.string().c_str(), TextureFormat::RGBA32F );
+	if( cacheEnabled && fs::exists( cachePath ) && 
+		( cmft::imageLoad( output, cachePath.string().c_str(), cmft::TextureFormat::RGBA32F )
+		|| cmft::imageLoadStb( output, cachePath.string().c_str(), cmft::TextureFormat::RGBA32F ) ) ) {
 	}
 	// otherwise load the original file and apply the radiance filter
 	else {
-		// create the input cmft::Image
-		auto surface = Surface( loadImage( source ) );
-		auto input = surfaceToImage( surface );
-		convertToCubeMap( input );
+		cmft::Image input;
+		bool imageLoaded = cmft::imageLoad( input, filePath.string().c_str(), cmft::TextureFormat::RGBA32F )
+						|| cmft::imageLoadStb( input, filePath.string().c_str(), cmft::TextureFormat::RGBA32F );
 	
-		cmft::imageCreate( output, dstFaceSize, dstFaceSize, 0xff0000ff, 7, 6, surface.hasAlpha() ? cmft::TextureFormat::RGBA8 : cmft::TextureFormat::RGB8 );
-
-		// create the opencl context
-		//cmft::ClContext clContext;
-		
-		//int32_t clLoaded = bx::clLoad();
-		//if( clLoaded ) {
-			//cmft::clPrintDevices();
-			//clContext.init( CMFT_CL_VENDOR_ANY_CPU, CMFT_CL_DEVICE_TYPE_CPU, 1 );
-		//}
-		//else {
-			//app::console() << "Problem initializing OpenCL Context." << endl;
-		//}
-
-		if( input.m_width != dstFaceSize ) {
-			cmft::imageResize( input, dstFaceSize );
+		if( ! imageLoaded ) {
+			app::console() << "Problem loading Image" << endl;
 		}
 
-		cmft::imageApplyGamma( input, 1.0f / 2.2f );
+		output = createPmrem( input, dstFaceSize, options );
+		cmft::imageUnload( input );
 		
-		// apply the filter
-	app::console() << "radiance filter" << endl;
-		if( ! cmft::imageRadianceFilter( output, dstFaceSize, cmft::LightingModel::BlinnBrdf, options.mExcludeBase, options.mMipCount, options.mGlossScale, options.mGlossBias, input, options.mEdgeFixup, options.mNumCpuProcessingThreads ) ) {//, &clContext ) ) {
-			app::console() << "imageRadianceFilter FAILED!" << endl;
-		}
-		
-		cmft::imageApplyGamma( output, 2.2f );
-	app::console() << "radiance filter done" << endl;
 		// save results if caching is enabled
-		if( options.mCacheEnabled ) {
+		if( cacheEnabled ) {
 			auto cachePath = filePath.parent_path() / ( filePath.filename().stem().string() + "_pmrem" );
 			cmft::imageSave( output, cachePath.string().c_str(), ImageFileType::DDS, OutputType::Cubemap, TextureFormat::RGBA16F, true );
 		}
-		
-		// Release OpenCL context and image memory
-		//clContext.destroy();
-		//if( clLoaded ) {
-			//bx::clUnload();
-		//}
-		cmft::imageUnload( input );
 	}
 	
 	// generate the opengl cubemap texture
-	auto outputTex = createTextureCubeMap( output ); 
+	auto outputTex = createTextureCubemap( output ); 
 	
 	// Release output image memory
 	cmft::imageUnload( output );
 	
 	return outputTex;
 }
-ci::gl::TextureCubeMapRef createIem( const ci::DataSourceRef &source, uint32_t dstFaceSize, const IrradianceFilterOptions &options )
+
+IrradianceFilterOptions& IrradianceFilterOptions::gammaCorrection( float gammaInput, float gammaOutput )
+{
+	mGammaInput = gammaInput;
+	mGammaOutput = gammaOutput;
+	return *this;
+}
+
+cmft::Image createIem( cmft::Image &input, uint32_t dstFaceSize, const IrradianceFilterOptions &options )
+{	
+	// prepare input / output
+	if( ! cmft::imageIsCubemap( input ) ) {
+		convertToCubemap( input );
+	}
+	cmft::Image output;
+	cmft::imageCreate( output, dstFaceSize, dstFaceSize, 0xff0000ff, 1, 6, cmft::TextureFormat::RGB32F );
+
+	// apply the filter
+	cmft::imageApplyGamma( input, options.mGammaInput );
+	cmft::imageIrradianceFilterSh( output, dstFaceSize, input );
+	cmft::imageApplyGamma( output, options.mGammaOutput );
+
+	return output;
+}
+
+ci::gl::TextureCubeMapRef createIem( const ci::Surface &source, uint32_t dstFaceSize, const IrradianceFilterOptions &options )
+{
+	auto input = surfaceToImage( source );
+	auto output = createIem( input, dstFaceSize, options );
+	
+	// generate the opengl cubemap texture
+	auto outputTex = createTextureCubemap( output );
+
+	// release image memory
+	cmft::imageUnload( output );
+	cmft::imageUnload( input );
+	
+	return outputTex;
+}
+
+ci::gl::TextureCubeMapRef createIem( const ci::fs::path &filePath, uint32_t dstFaceSize, const IrradianceFilterOptions &options, bool cacheEnabled )
 {
 	cmft::Image output;
 	
 	// if caching is enabled check whether the results have already been calculated
-	auto filePath = source->getFilePath();
 	auto cachePath = filePath.parent_path() / ( filePath.filename().stem().string() + "_iem.dds" );
-	if( options.mCacheEnabled && fs::exists( cachePath ) ) {
-		cmft::imageLoad( output, cachePath.string().c_str(), TextureFormat::RGBA32F );
+	if( cacheEnabled && fs::exists( cachePath ) && 
+		( cmft::imageLoad( output, cachePath.string().c_str(), cmft::TextureFormat::RGBA32F )
+		|| cmft::imageLoadStb( output, cachePath.string().c_str(), cmft::TextureFormat::RGBA32F ) ) ) {
 	}
 	// otherwise load the original file and apply the radiance filter
 	else {
-
-		// create the input and output cmft::Images
-		auto surface = Surface( loadImage( source ) );
-		auto input = surfaceToImage( surface );
-		convertToCubeMap( input );
+		cmft::Image input;
+		bool imageLoaded = cmft::imageLoad( input, filePath.string().c_str(), cmft::TextureFormat::RGBA32F )
+						|| cmft::imageLoadStb( input, filePath.string().c_str(), cmft::TextureFormat::RGBA32F );
 	
-		cmft::imageCreate( output, dstFaceSize, dstFaceSize, 0xff0000ff, 1, 6, cmft::TextureFormat::RGB8 );
-	app::console() << "irradiance filter" << endl;
-		// apply the filter
-		cmft::imageApplyGamma( input, 1.0f / 2.2f );
-		cmft::imageIrradianceFilterSh( output, dstFaceSize, input );
-		cmft::imageApplyGamma( output, 2.2f );
-	app::console() << "irradiance filter done" << endl;	
+		if( ! imageLoaded ) {
+			app::console() << "Problem loading Image" << endl;
+		}
+		output = createIem( input, dstFaceSize, options );
+
 		// save results if caching is enabled
-		if( options.mCacheEnabled ) {
+		if( cacheEnabled ) {
 			auto cachePath = filePath.parent_path() / ( filePath.filename().stem().string() + "_iem" );
 			cmft::imageSave( output, cachePath.string().c_str(), ImageFileType::DDS, OutputType::Cubemap, TextureFormat::RGBA16F, true );
 		}
@@ -296,7 +369,7 @@ ci::gl::TextureCubeMapRef createIem( const ci::DataSourceRef &source, uint32_t d
 		cmft::imageUnload( input );
 	}
 	
-	auto outputTex = createTextureCubeMap( output );
+	auto outputTex = createTextureCubemap( output );
 
 	// release image memory
 	cmft::imageUnload( output );
