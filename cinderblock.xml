@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+<block
+	name="Cmft"
+	id="sg.cinder.cmft"
+	author="Simon Geilfus"
+	summary="Cinder wrapper for CMFT"
+	license="BSD 2-clause"
+	git="https://github.com/simongeilfus/Cinder-Cmft.git"
+	>	
+	<includePath>lib/cmft/include</includePath>
+	<includePath>lib/cmft/dependency/bx/include</includePath>
+	<includePath>lib/cmft/dependency/dm/include</includePath>
+	<includePath>lib/opencl/include</includePath>
+	<includePath>lib/cmft/src/cmft</includePath>
+	<includePath>src/</includePath>
+	
+	<headerPattern>lib/cmft/include/*.h</headerPattern>
+	<headerPattern>lib/cmft/src/cmft/*.h</headerPattern>
+	<headerPattern>lib/cmft/src/cmft/base/*.h</headerPattern>
+	<headerPattern>src/*.h</headerPattern>
+	
+    <sourcePattern>lib/cmft/src/cmft/*.cpp</sourcePattern>
+    <sourcePattern>lib/cmft/src/cmft/base/*.cpp</sourcePattern>
+    <sourcePattern>src/*.cpp</sourcePattern>
+	
+	<platform os="msw">
+		<includePath>lib/cmft/dependency/bx/include/compat/msvc</includePath>
+    	<staticLibrary>lib/opencl/lib/msw/$(PlatformTarget)/OpenCL.lib</staticLibrary>
+    </platform>
+
+</block>
+</cinder>
