@@ -5,6 +5,7 @@ uniform samplerCube uIemSampler;
 uniform sampler2D 	uRoughnessSampler;
 uniform sampler2D 	uMetallicSampler;
 uniform sampler2D 	uNormalSampler;
+uniform sampler2D 	uBaseColorSampler;
 
 uniform vec3 		uCameraPos;
 
@@ -56,30 +57,56 @@ vec3 calculateEnvBRDFApprox( vec3 SpecularColor, float Roughness, float NoV )
 }
 
 
+
+// Filmic tonemapping from
+// http://filmicgames.com/archives/75
+
+const float A = 0.15;
+const float B = 0.50;
+const float C = 0.10;
+const float D = 0.20;
+const float E = 0.02;
+const float F = 0.20;
+
+vec3 Uncharted2Tonemap( vec3 x )
+{
+	return ((x*(A*x+C*B)+D*E)/(x*(A*x+B)+D*F))-E/F;
+}
+
 const float mipCount = 7.0;
 
 void main( void )
 {
-	vec3 baseColor 			= vec3( 1, 1, 1 );
+	vec3 baseColor 			= pow( texture( uBaseColorSampler, vUv ).rgb, vec3( 2.2 ) );
     float roughness 		= texture( uRoughnessSampler, vUv ).x;
     float metallic 			= texture( uMetallicSampler, vUv ).x;
 
-	vec3 specularColor 		= mix( vec3( 0.08 ), baseColor, metallic );
+	vec3 specularColor 		= mix( vec3( 0.04 ), baseColor, metallic );
 	vec3 diffuseColor 		= baseColor - baseColor * metallic;
 	vec3 normalSample 		= normalize( texture( uNormalSampler, vUv ).xyz * 2.0 - 1.0 );
 
 	vec3 V 					= normalize( uCameraPos-vPosition );
 	vec3 N 					= normalize( calculateCotangentFrame( normalize( vNormal ), vPosition, vUv ) * normalSample );
     vec3 R 					= -reflect( V, N );
-    float NoV 				= dot( N, V );
+    float NoV 				= clamp( dot( N, V ), 0.0, 1.0 );
 
-    vec3 reflectivity 		= vec3( 0.75 );
-	float lod 				= ( roughness ) * ( mipCount - 1.0 );
-	vec3 fresnel 			= fresnel( reflectivity, NoV, 1.0 - roughness );
-	vec3 radiance   		= specularColor * pow( textureLod( uPmremSampler, R, lod ).xyz, vec3( 2.2 ) );
-	vec3 irradiance 		= diffuseColor * pow( texture( uIemSampler, vNormal ).xyz, vec3( 2.2 ) );
+	//float mip 				= ( roughness ) * ( mipCount - 1.0 );
+	float mip 				= mipCount - 1.0 - ( 1.0 - log2( roughness ) );
+	vec3 fresnel 			= fresnel( specularColor, NoV, 1.0 - roughness );
+	vec3 radiance   		= fresnel * pow( textureLod( uPmremSampler, R, mip ).xyz, vec3( 1.0 ) );
+	vec3 irradiance 		= diffuseColor * pow( texture( uIemSampler, vNormal ).xyz, vec3( 1.0 ) );
 
-	oColor = vec4( pow( irradiance + radiance, vec3( 1.0 / 2.2 ) ), 1.0f );
+	vec3 color 				= irradiance + radiance;
 
+
+	// apply the tone-mapping
+	color					= Uncharted2Tonemap( color );
+	// white balance
+	color					= color * ( 1.0f / Uncharted2Tonemap( vec3( 1.5f ) ) );
+	// gamma correction 
+	color 					= pow( color, vec3( 1.0 / 2.2 ) );
+
+	oColor 					= vec4( color, 1.0f );
+	//oColor = vec4( vec3( mip / 6.0 ), 1.0 );
 	//oColor = vec4(  );
 }
