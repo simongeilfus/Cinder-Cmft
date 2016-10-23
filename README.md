@@ -4,8 +4,6 @@ Cubemap Filtering Tools for Cinder based on [cmft](https://github.com/dariomanes
 
 See [cmft repository](https://github.com/dariomanesku/cmft) for more information.
 
-![Image](/res/demo_screenshots.jpg)
-
 Convenient functions to load, filter and cache environment maps : 
 
 ```c++
@@ -43,3 +41,5 @@ gl::TextureCubeMapRef cubemap = cmft::createTextureCubemap( output );
 cmft::imageUnload( input );
 cmft::imageUnload( output );
 ```
+
+![Image](/res/demo_screenshots.jpg)
