@@ -4,7 +4,7 @@ Cubemap Filtering Tools for Cinder based on [cmft](https://github.com/dariomanes
 
 See [cmft repository](https://github.com/dariomanesku/cmft) for more information.
 
-Convenient functions to load, filter and cache environment maps : 
+The block is roughly organised around two types of functions; Convenient functions to load, filter and cache environment maps as `cinder::gl::TextureCubeMapRef`: 
 
 ```c++
 // create the skybox, radiance and irradiance environment map
@@ -18,7 +18,7 @@ mPmrem			= cmft::createPmrem( imgPath, 256 );
 mIem			= cmft::createIem( imgPath, 64 );
 ```
 
-Conversion functions to interface directly between cmft and cinder:
+And conversion and helpers functions to interface directly between `cmft::Images` and `cinder::Surfaces` and `cinder::gl::TextureCubeMaps` :
 
 ```c++
 // load an image with cinder and convert it to a cmft::Image
@@ -41,5 +41,7 @@ gl::TextureCubeMapRef cubemap = cmft::createTextureCubemap( output );
 cmft::imageUnload( input );
 cmft::imageUnload( output );
 ```
+
+Screenshots from the demo app (material made with Substance Designer and HDR Envmaps from [NoEmotionHDRs](http://noemotionhdrs.net)) :
 
 ![Image](/res/demo_screenshots.jpg)
