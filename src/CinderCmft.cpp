@@ -18,11 +18,70 @@ cmft::Image surfaceToImage( const ci::Surface &surface )
 }
 cmft::Image textureCubemapToImage( const ci::gl::TextureCubeMapRef &cubemap )
 {
+	GLenum format, dataType;
+	cmft::TextureFormat::Enum texFormat;
+	switch( cubemap->getInternalFormat() ) {
+	case GL_BGR:
+		format = GL_BGR;
+		dataType = GL_UNSIGNED_BYTE;
+		texFormat = cmft::TextureFormat::BGR8;
+		break;
+	case GL_RGB8:
+		format = GL_RGB;
+		dataType = GL_UNSIGNED_BYTE;
+		texFormat = cmft::TextureFormat::RGB8;
+		break;
+	case GL_RGB16:
+		format = GL_RGB;
+		dataType = GL_UNSIGNED_BYTE;
+		texFormat = cmft::TextureFormat::RGB16;
+		break;
+	case GL_RGB16F:
+		format = GL_RGB;
+		dataType = GL_FLOAT;
+		texFormat = cmft::TextureFormat::RGB16F;
+		break;
+	case GL_RGB32F:
+		format = GL_RGB;
+		dataType = GL_FLOAT;
+		texFormat = cmft::TextureFormat::RGB32F;
+		break;
+	case GL_BGRA:
+		format = GL_BGRA;
+		dataType = GL_UNSIGNED_BYTE;
+		texFormat = cmft::TextureFormat::BGRA8;
+		break;
+	case GL_RGBA8:
+		format = GL_RGBA;
+		dataType = GL_UNSIGNED_BYTE;
+		texFormat = cmft::TextureFormat::RGBA8;
+		break;
+	case GL_RGBA16:
+		format = GL_RGBA;
+		dataType = GL_UNSIGNED_BYTE;
+		texFormat = cmft::TextureFormat::RGBA16;
+		break;
+	case GL_RGBA16F:
+		format = GL_RGBA;
+		dataType = GL_FLOAT;
+		texFormat = cmft::TextureFormat::RGBA16F;
+		break;
+	case GL_RGBA32F:
+		format = GL_RGBA;
+		dataType = GL_FLOAT;
+		texFormat = cmft::TextureFormat::RGBA32F;
+		break;
+	}
+
+	cmft::Image faceList[6];
+	gl::ScopedTextureBind scopedTex( cubemap );
+	for( int face = 0 ; face < 6; ++face ) {
+		cmft::imageCreate( faceList[face], cubemap->getWidth(), cubemap->getHeight(), 0x000000ff, 1, 1, texFormat );
+		glGetTexImage( GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, format, dataType, faceList[face].m_data );
+	}
+	
 	cmft::Image img;
-	assert( false );
-	//cmft::imageCubemapFromFaceList();
-	//cmft::imageCreate( img, surface.getWidth(), surface.getHeight(), 0x000000ff, 1, 1, surface.hasAlpha() ? cmft::TextureFormat::RGBA8 : cmft::TextureFormat::RGB8 );
-	//memcpy( img.m_data, (void*) surface.getData(), img.m_dataSize );
+	cmft::imageCubemapFromFaceList( img, faceList );
 	return img;
 }
 
@@ -30,19 +89,15 @@ void convertToCubemap( cmft::Image &image )
 {
 	if( ! cmft::imageIsCubemap( image ) ) {
 		if( cmft::imageIsCubeCross( image ) ) {
-			app::console() << "Image is CubeCross" << endl;
 			cmft::imageCubemapFromCross( image );
 		}
 		else if( cmft::imageIsLatLong( image ) ) {
-			app::console() << "Image is LatLong" << endl;
 			cmft::imageCubemapFromLatLong( image );
 		}
 		else if( cmft::imageIsHStrip( image ) || cmft::imageIsVStrip( image ) )	{
-			app::console() << "Image is Strip" << endl;
 			cmft::imageCubemapFromStrip( image );
 		}
 		else if( cmft::imageIsOctant( image ) )	{
-			app::console() << "Image is Octant" << endl;
 			cmft::imageCubemapFromOctant( image );
 		}
 		else if( ! cmft::imageCubemapFromCross( image ) ) {
