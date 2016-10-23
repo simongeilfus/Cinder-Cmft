@@ -1,0 +1,540 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		006D720419952D00008149E2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006D720219952D00008149E2 /* AVFoundation.framework */; };
+		006D720519952D00008149E2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006D720319952D00008149E2 /* CoreMedia.framework */; };
+		0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0091D8F80E81B9330029341E /* OpenGL.framework */; };
+		00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784AF0FF439BC000DE1D7 /* Accelerate.framework */; };
+		00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */; };
+		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
+		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
+		00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995581B128DF400A5C623 /* IOKit.framework */; };
+		00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
+		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		8B6CC1858BE946B396861A74 /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D86D81A80C47C6A9CFC6D8 /* imgui_demo.cpp */; };
+		F482C42637734FC8861D8E6F /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB04A74B29894D9B8D092A92 /* imgui_draw.cpp */; };
+		ED813124F02046C1A5DC8317 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BFF165299E469198017F83 /* imgui.cpp */; };
+		59A980C1B6B74C09BFE16994 /* CinderImGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0285BB72A5EE4C788F1C2270 /* CinderImGui.cpp */; };
+		94BAD1725C0E4600B13F5ED7 /* imgui_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 549B91B7DC2E48609D3A2AE0 /* imgui_internal.h */; };
+		0F71C520B26343918E8C9C95 /* imgui.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFD7FEA54BE4965A70E4F53 /* imgui.h */; };
+		5895C2FA814C40129D800FE9 /* imconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E999F74F1704890AC9DF534 /* imconfig.h */; };
+		CC5E558B299B4A0DABA7C7E1 /* imgui_user.inl in Headers */ = {isa = PBXBuildFile; fileRef = 9AAEB41C414E4F3FB06058B0 /* imgui_user.inl */; };
+		CB7B2CA9529E4F6C9A1D0AB1 /* imgui_user.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E81CD49A8734853BAD1082C /* imgui_user.h */; };
+		5CFE8B96377B400482219B82 /* CinderImGui.h in Headers */ = {isa = PBXBuildFile; fileRef = E4CCD094B86A4C5AB412023F /* CinderImGui.h */; };
+		8F22EAC8C69D4D9B9254D60B /* CinderCmft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4418503CE7274FEBA1026E14 /* CinderCmft.cpp */; };
+		BA67D38ACF6D41C5BB85F445 /* stb_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E83439A9C804E8FB3556C47 /* stb_image.cpp */; };
+		BD5517A1ADC14F91954A1005 /* print.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9836D7967ABB4535856D64E3 /* print.cpp */; };
+		D0A67FC48C924037AAA11946 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4F186609E24B55A6B1B2B6 /* image.cpp */; };
+		F36B8CFAA0E04600BB40281A /* cubemapfilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A02B8458A4BA44D7BFAA9F64 /* cubemapfilter.cpp */; };
+		9ED8CC76D368482F9EF3850A /* clcontext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 073FC61C14D1400E9794B0B8 /* clcontext.cpp */; };
+		A8E1883D74C24797AE47E61A /* allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F12BFCD49994489CA72E725E /* allocator.cpp */; };
+		DB0B7B500DF141439E611166 /* CinderCmft.h in Headers */ = {isa = PBXBuildFile; fileRef = FDB38F225A7F4886B4D77840 /* CinderCmft.h */; };
+		4118CAE70C884BD09AE3115C /* stb_image.h in Headers */ = {isa = PBXBuildFile; fileRef = 3166103B325E4911A637A792 /* stb_image.h */; };
+		0B4EF6038ADA480DA82C0AC5 /* macros.h in Headers */ = {isa = PBXBuildFile; fileRef = EFC1B61A37194C598FE1C4D7 /* macros.h */; };
+		2BC37D95208944A2A9C049A3 /* fpumath.h in Headers */ = {isa = PBXBuildFile; fileRef = 508BDE77FA114E18B995B37E /* fpumath.h */; };
+		03913FCF016C466780577679 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B2A6D81A3EE4866A4A617B0 /* config.h */; };
+		0F0B442BDB1F4E73A0F02A83 /* radiance.h in Headers */ = {isa = PBXBuildFile; fileRef = 91EFF7D8F18546D1B73EFA75 /* radiance.h */; };
+		E2F3B120F8EE447185F92A5C /* cubemaputils.h in Headers */ = {isa = PBXBuildFile; fileRef = EEBB9A84AC634E7DAB989884 /* cubemaputils.h */; };
+		F4332BAED7F64A4AA1B56561 /* Demo_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = BF93B61580F642BF8E99B6B7 /* Demo_Prefix.pch */; };
+		B56DE8541C564E53A2024B3C /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 15C56AA0DC5648AC9BF245BB /* CinderApp.icns */; };
+		20D2BAECCA22488194774E96 /* Resources.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AE1CCC5DD924725A3BAD4BC /* Resources.h */; };
+		0E7BBF036E95497581B54E46 /* DemoApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF34C049BC034237B5782307 /* DemoApp.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		006D720219952D00008149E2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		006D720319952D00008149E2 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		0091D8F80E81B9330029341E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		00B784AF0FF439BC000DE1D7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		00B784B10FF439BC000DE1D7 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		00B995581B128DF400A5C623 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		00B995591B128DF400A5C623 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
+		8D1107320486CEB800E47090 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF34C049BC034237B5782307 /* DemoApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../src/DemoApp.cpp; sourceTree = "<group>"; name = DemoApp.cpp; };
+		3AE1CCC5DD924725A3BAD4BC /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../include/Resources.h; sourceTree = "<group>"; name = Resources.h; };
+		15C56AA0DC5648AC9BF245BB /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; name = CinderApp.icns; };
+		8DA74DBB034D491ABC19D80A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; name = Info.plist; };
+		BF93B61580F642BF8E99B6B7 /* Demo_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = Demo_Prefix.pch; sourceTree = "<group>"; name = Demo_Prefix.pch; };
+		EEBB9A84AC634E7DAB989884 /* cubemaputils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../../../lib/cmft/src/cmft/cubemaputils.h; sourceTree = "<group>"; name = cubemaputils.h; };
+		91EFF7D8F18546D1B73EFA75 /* radiance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../../../lib/cmft/src/cmft/radiance.h; sourceTree = "<group>"; name = radiance.h; };
+		9B2A6D81A3EE4866A4A617B0 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../../../lib/cmft/src/cmft/base/config.h; sourceTree = "<group>"; name = config.h; };
+		508BDE77FA114E18B995B37E /* fpumath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../../../lib/cmft/src/cmft/base/fpumath.h; sourceTree = "<group>"; name = fpumath.h; };
+		EFC1B61A37194C598FE1C4D7 /* macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../../../lib/cmft/src/cmft/base/macros.h; sourceTree = "<group>"; name = macros.h; };
+		3166103B325E4911A637A792 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../../../lib/cmft/src/cmft/base/stb_image.h; sourceTree = "<group>"; name = stb_image.h; };
+		FDB38F225A7F4886B4D77840 /* CinderCmft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../../../src/CinderCmft.h; sourceTree = "<group>"; name = CinderCmft.h; };
+		F12BFCD49994489CA72E725E /* allocator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../../../lib/cmft/src/cmft/allocator.cpp; sourceTree = "<group>"; name = allocator.cpp; };
+		073FC61C14D1400E9794B0B8 /* clcontext.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../../../lib/cmft/src/cmft/clcontext.cpp; sourceTree = "<group>"; name = clcontext.cpp; };
+		A02B8458A4BA44D7BFAA9F64 /* cubemapfilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../../../lib/cmft/src/cmft/cubemapfilter.cpp; sourceTree = "<group>"; name = cubemapfilter.cpp; };
+		5B4F186609E24B55A6B1B2B6 /* image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../../../lib/cmft/src/cmft/image.cpp; sourceTree = "<group>"; name = image.cpp; };
+		9836D7967ABB4535856D64E3 /* print.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../../../lib/cmft/src/cmft/base/print.cpp; sourceTree = "<group>"; name = print.cpp; };
+		5E83439A9C804E8FB3556C47 /* stb_image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../../../lib/cmft/src/cmft/base/stb_image.cpp; sourceTree = "<group>"; name = stb_image.cpp; };
+		4418503CE7274FEBA1026E14 /* CinderCmft.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../../../src/CinderCmft.cpp; sourceTree = "<group>"; name = CinderCmft.cpp; };
+		E4CCD094B86A4C5AB412023F /* CinderImGui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../blocks/ImGui/include/CinderImGui.h; sourceTree = "<group>"; name = CinderImGui.h; };
+		3E81CD49A8734853BAD1082C /* imgui_user.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../blocks/ImGui/include/imgui_user.h; sourceTree = "<group>"; name = imgui_user.h; };
+		9AAEB41C414E4F3FB06058B0 /* imgui_user.inl */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ../blocks/ImGui/include/imgui_user.inl; sourceTree = "<group>"; name = imgui_user.inl; };
+		6E999F74F1704890AC9DF534 /* imconfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../blocks/ImGui/lib/imgui/imconfig.h; sourceTree = "<group>"; name = imconfig.h; };
+		8BFD7FEA54BE4965A70E4F53 /* imgui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../blocks/ImGui/lib/imgui/imgui.h; sourceTree = "<group>"; name = imgui.h; };
+		549B91B7DC2E48609D3A2AE0 /* imgui_internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../blocks/ImGui/lib/imgui/imgui_internal.h; sourceTree = "<group>"; name = imgui_internal.h; };
+		0285BB72A5EE4C788F1C2270 /* CinderImGui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../blocks/ImGui/src/CinderImGui.cpp; sourceTree = "<group>"; name = CinderImGui.cpp; };
+		03BFF165299E469198017F83 /* imgui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../blocks/ImGui/lib/imgui/imgui.cpp; sourceTree = "<group>"; name = imgui.cpp; };
+		FB04A74B29894D9B8D092A92 /* imgui_draw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../blocks/ImGui/lib/imgui/imgui_draw.cpp; sourceTree = "<group>"; name = imgui_draw.cpp; };
+		D6D86D81A80C47C6A9CFC6D8 /* imgui_demo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../blocks/ImGui/lib/imgui/imgui_demo.cpp; sourceTree = "<group>"; name = imgui_demo.cpp; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				006D720419952D00008149E2 /* AVFoundation.framework in Frameworks */,
+				006D720519952D00008149E2 /* CoreMedia.framework in Frameworks */,
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
+				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
+				00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */,
+				00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */,
+				00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */,
+				00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */,
+				00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */,
+				00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				BF34C049BC034237B5782307 /* DemoApp.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				006D720219952D00008149E2 /* AVFoundation.framework */,
+				006D720319952D00008149E2 /* CoreMedia.framework */,
+				00B784AF0FF439BC000DE1D7 /* Accelerate.framework */,
+				00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */,
+				00B784B10FF439BC000DE1D7 /* AudioUnit.framework */,
+				00B784B20FF439BC000DE1D7 /* CoreAudio.framework */,
+				5323E6B10EAFCA74003A9687 /* CoreVideo.framework */,
+				0091D8F80E81B9330029341E /* OpenGL.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				00B995581B128DF400A5C623 /* IOKit.framework */,
+				00B995591B128DF400A5C623 /* IOSurface.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* Demo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				01B97315FEAEA392516A2CEA /* Blocks */,
+				29B97315FDCFA39411CA2CEA /* Headers */,
+				080E96DDFE201D6D7F000001 /* Source */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = Demo;
+			sourceTree = "<group>";
+		};
+		167D10792E5F4289AD134894 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				9B2A6D81A3EE4866A4A617B0 /* config.h */,
+				508BDE77FA114E18B995B37E /* fpumath.h */,
+				EFC1B61A37194C598FE1C4D7 /* macros.h */,
+				3166103B325E4911A637A792 /* stb_image.h */,
+				9836D7967ABB4535856D64E3 /* print.cpp */,
+				5E83439A9C804E8FB3556C47 /* stb_image.cpp */,
+			);
+			name = base;
+			sourceTree = "<group>";
+		};
+		C7BB5C569D214982A4149CF0 /* cmft */ = {
+			isa = PBXGroup;
+			children = (
+				EEBB9A84AC634E7DAB989884 /* cubemaputils.h */,
+				91EFF7D8F18546D1B73EFA75 /* radiance.h */,
+				167D10792E5F4289AD134894 /* base */,
+				F12BFCD49994489CA72E725E /* allocator.cpp */,
+				073FC61C14D1400E9794B0B8 /* clcontext.cpp */,
+				A02B8458A4BA44D7BFAA9F64 /* cubemapfilter.cpp */,
+				5B4F186609E24B55A6B1B2B6 /* image.cpp */,
+			);
+			name = cmft;
+			sourceTree = "<group>";
+		};
+		7FA768A22F4145B0A4A5ABD8 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				C7BB5C569D214982A4149CF0 /* cmft */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		E15611746F1843FFB6214E69 /* cmft */ = {
+			isa = PBXGroup;
+			children = (
+				7FA768A22F4145B0A4A5ABD8 /* src */,
+			);
+			name = cmft;
+			sourceTree = "<group>";
+		};
+		68481DC2195044578B056C07 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				E15611746F1843FFB6214E69 /* cmft */,
+			);
+			name = lib;
+			sourceTree = "<group>";
+		};
+		7127D2D6D4B5439ABA288CCB /* src */ = {
+			isa = PBXGroup;
+			children = (
+				FDB38F225A7F4886B4D77840 /* CinderCmft.h */,
+				4418503CE7274FEBA1026E14 /* CinderCmft.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		DBB4A54A85254437B068E392 /* Cmft */ = {
+			isa = PBXGroup;
+			children = (
+				68481DC2195044578B056C07 /* lib */,
+				7127D2D6D4B5439ABA288CCB /* src */,
+			);
+			name = Cmft;
+			sourceTree = "<group>";
+		};
+		FE9DA6D96E1D4AA79486FC24 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E4CCD094B86A4C5AB412023F /* CinderImGui.h */,
+				3E81CD49A8734853BAD1082C /* imgui_user.h */,
+				9AAEB41C414E4F3FB06058B0 /* imgui_user.inl */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		B76CEDE8153F4AF6AD7FD10C /* imgui */ = {
+			isa = PBXGroup;
+			children = (
+				6E999F74F1704890AC9DF534 /* imconfig.h */,
+				8BFD7FEA54BE4965A70E4F53 /* imgui.h */,
+				549B91B7DC2E48609D3A2AE0 /* imgui_internal.h */,
+				03BFF165299E469198017F83 /* imgui.cpp */,
+				FB04A74B29894D9B8D092A92 /* imgui_draw.cpp */,
+				D6D86D81A80C47C6A9CFC6D8 /* imgui_demo.cpp */,
+			);
+			name = imgui;
+			sourceTree = "<group>";
+		};
+		C8E7331CF23445B2A17FE498 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				B76CEDE8153F4AF6AD7FD10C /* imgui */,
+			);
+			name = lib;
+			sourceTree = "<group>";
+		};
+		8445BC30BF9D4FEC8B7D99FC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				0285BB72A5EE4C788F1C2270 /* CinderImGui.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		A5F15489520242F49D8B8223 /* ImGui */ = {
+			isa = PBXGroup;
+			children = (
+				FE9DA6D96E1D4AA79486FC24 /* include */,
+				C8E7331CF23445B2A17FE498 /* lib */,
+				8445BC30BF9D4FEC8B7D99FC /* src */,
+			);
+			name = ImGui;
+			sourceTree = "<group>";
+		};
+		01B97315FEAEA392516A2CEA /* Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				DBB4A54A85254437B068E392 /* Cmft */,
+				A5F15489520242F49D8B8223 /* ImGui */,
+			);
+			name = Blocks;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				3AE1CCC5DD924725A3BAD4BC /* Resources.h */,
+				BF93B61580F642BF8E99B6B7 /* Demo_Prefix.pch */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				15C56AA0DC5648AC9BF245BB /* CinderApp.icns */,
+				8DA74DBB034D491ABC19D80A /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Demo" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Demo;
+			productInstallPath = "$(HOME)/Applications";
+			productName = Demo;
+			productReference = 8D1107320486CEB800E47090 /* Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Demo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Demo */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* Demo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56DE8541C564E53A2024B3C /* CinderApp.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E7BBF036E95497581B54E46 /* DemoApp.cpp in Sources */,
+				A8E1883D74C24797AE47E61A /* allocator.cpp in Sources */,
+				9ED8CC76D368482F9EF3850A /* clcontext.cpp in Sources */,
+				F36B8CFAA0E04600BB40281A /* cubemapfilter.cpp in Sources */,
+				D0A67FC48C924037AAA11946 /* image.cpp in Sources */,
+				BD5517A1ADC14F91954A1005 /* print.cpp in Sources */,
+				BA67D38ACF6D41C5BB85F445 /* stb_image.cpp in Sources */,
+				8F22EAC8C69D4D9B9254D60B /* CinderCmft.cpp in Sources */,
+				59A980C1B6B74C09BFE16994 /* CinderImGui.cpp in Sources */,
+				ED813124F02046C1A5DC8317 /* imgui.cpp in Sources */,
+				F482C42637734FC8861D8E6F /* imgui_draw.cpp in Sources */,
+				8B6CC1858BE946B396861A74 /* imgui_demo.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Demo_Prefix.pch;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Demo;
+				SYMROOT = ./build;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_FAST_MATH = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG=1",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Demo_Prefix.pch;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Demo;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = ./build;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CINDER_PATH = "../../../../..";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				ENABLE_TESTABILITY = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/include\" ../include",
+					../../../lib/cmft/include,
+					../../../lib/cmft/dependency/bx/include,
+					../../../lib/cmft/dependency/dm/include,
+					../../../lib/opencl/include,
+					../../../lib/cmft/src/cmft,
+					../../../src,
+					../blocks/ImGui/lib/imgui,
+					../blocks/ImGui/include,
+				);
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CINDER_PATH = "../../../../..";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/include\" ../include",
+					../../../lib/cmft/include,
+					../../../lib/cmft/dependency/bx/include,
+					../../../lib/cmft/dependency/dm/include,
+					../../../lib/opencl/include,
+					../../../lib/cmft/src/cmft,
+					../../../src,
+					../blocks/ImGui/lib/imgui,
+					../blocks/ImGui/include,
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
