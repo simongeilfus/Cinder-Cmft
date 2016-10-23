@@ -25,3 +25,6 @@ ipch/
 
 # Cmft Textures
 *.dds
+
+# ImGui
+imgui.ini
