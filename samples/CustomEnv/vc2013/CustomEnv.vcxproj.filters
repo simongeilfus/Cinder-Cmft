@@ -1,0 +1,148 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Blocks">
+      <UniqueIdentifier>{02EABFB3-8143-4EB4-9A6D-7891A4EDA52C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cmft">
+      <UniqueIdentifier>{BDF7E2E2-9465-4403-A226-0FC45D7CA447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cmft\lib">
+      <UniqueIdentifier>{F9B8F6B3-3849-420C-B2C9-1A1F819A9788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cmft\lib\cmft">
+      <UniqueIdentifier>{49B9A758-E953-4D79-882C-B3B1386E697B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cmft\lib\cmft\src">
+      <UniqueIdentifier>{D6CC42A8-1411-4966-91AE-F99C07C1207C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cmft\lib\cmft\src\cmft">
+      <UniqueIdentifier>{DFA8B5D5-B1E1-4C58-B759-1C933C9D8948}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cmft\lib\cmft\src\cmft\base">
+      <UniqueIdentifier>{F762D59A-B5E9-48A1-9247-B3409F3429C1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cmft\src">
+      <UniqueIdentifier>{95C1A0F4-87C5-410F-8F56-D3BE430DCCAA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ImGui">
+      <UniqueIdentifier>{FA9AD49B-9947-45F4-BEAA-3DB809EEAE2A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ImGui\include">
+      <UniqueIdentifier>{ED2D331E-617E-4D58-8C30-589460E622FA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ImGui\lib">
+      <UniqueIdentifier>{6655659C-72B8-4403-84BF-75FD3451643E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ImGui\lib\imgui">
+      <UniqueIdentifier>{A1234BBE-E854-4C6F-9C15-A3944A063458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ImGui\src">
+      <UniqueIdentifier>{89C05D3C-9A78-47D2-9F6D-A4712B78A31F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\CustomEnvApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CustomEnvApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cmft\src\cmft\cubemaputils.h">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cmft\src\cmft\radiance.h">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cmft\src\cmft\base\config.h">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cmft\src\cmft\base\fpumath.h">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cmft\src\cmft\base\macros.h">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cmft\src\cmft\base\stb_image.h">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\CinderCmft.h">
+      <Filter>Blocks\Cmft\src</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\lib\cmft\src\cmft\allocator.cpp">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cmft\src\cmft\clcontext.cpp">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cmft\src\cmft\cubemapfilter.cpp">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cmft\src\cmft\image.cpp">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cmft\src\cmft\base\print.cpp">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cmft\src\cmft\base\stb_image.cpp">
+      <Filter>Blocks\Cmft\lib\cmft\src\cmft\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\CinderCmft.cpp">
+      <Filter>Blocks\Cmft\src</Filter>
+    </ClCompile>
+    <ClInclude Include="..\blocks\ImGui\include\CinderImGui.h">
+      <Filter>Blocks\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ImGui\include\imgui_user.h">
+      <Filter>Blocks\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ImGui\include\imgui_user.inl">
+      <Filter>Blocks\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ImGui\lib\imgui\imconfig.h">
+      <Filter>Blocks\ImGui\lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ImGui\lib\imgui\imgui.h">
+      <Filter>Blocks\ImGui\lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ImGui\lib\imgui\imgui_internal.h">
+      <Filter>Blocks\ImGui\lib\imgui</Filter>
+    </ClInclude>
+    <ClCompile Include="..\blocks\ImGui\src\CinderImGui.cpp">
+      <Filter>Blocks\ImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ImGui\lib\imgui\imgui.cpp">
+      <Filter>Blocks\ImGui\lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ImGui\lib\imgui\imgui_draw.cpp">
+      <Filter>Blocks\ImGui\lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ImGui\lib\imgui\imgui_demo.cpp">
+      <Filter>Blocks\ImGui\lib\imgui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
