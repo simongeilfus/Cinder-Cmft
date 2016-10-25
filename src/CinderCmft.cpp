@@ -9,17 +9,18 @@ using namespace std;
 
 namespace cmft {
 
-cmft::Image surfaceToImage( const ci::Surface &surface )
-{
-	cmft::Image img;
-	cmft::imageCreate( img, surface.getWidth(), surface.getHeight(), 0x000000ff, 1, 1, surface.hasAlpha() ? cmft::TextureFormat::RGBA8 : cmft::TextureFormat::RGB8 );
-	memcpy( img.m_data, (void*) surface.getData(), img.m_dataSize );
-	return img;
+void surfaceToImage( const ci::Surface &surface, cmft::Image &output )
+{	
+	if( cmft::imageIsValid( output ) ) {
+		cmft::imageUnload( output );
+	}
+	cmft::imageCreate( output, surface.getWidth(), surface.getHeight(), 0x000000ff, 1, 1, surface.hasAlpha() ? cmft::TextureFormat::RGBA8 : cmft::TextureFormat::RGB8 );
+	memcpy( output.m_data, (void*) surface.getData(), output.m_dataSize );
 }
-cmft::Image textureCubemapToImage( const ci::gl::TextureCubeMapRef &cubemap )
+void textureCubemapToImage( const ci::gl::TextureCubeMapRef &cubemap, cmft::Image &output )
 {
 	GLenum format, dataType;
-	cmft::TextureFormat::Enum texFormat;
+	cmft::TextureFormat::Enum texFormat = cmft::TextureFormat::RGBA32F;
 	switch( cubemap->getInternalFormat() ) {
 	case GL_BGR:
 		format = GL_BGR;
@@ -38,8 +39,10 @@ cmft::Image textureCubemapToImage( const ci::gl::TextureCubeMapRef &cubemap )
 		break;
 	case GL_RGB16F:
 		format = GL_RGB;
-		dataType = GL_FLOAT;
-		texFormat = cmft::TextureFormat::RGB16F;
+		dataType = GL_HALF_FLOAT;
+		// forcing alpha channel. see https://github.com/dariomanesku/cmft/issues/21
+		texFormat = TextureFormat::RGBA16F;
+			// cmft::TextureFormat::RGB16F;
 		break;
 	case GL_RGB32F:
 		format = GL_RGB;
@@ -63,7 +66,7 @@ cmft::Image textureCubemapToImage( const ci::gl::TextureCubeMapRef &cubemap )
 		break;
 	case GL_RGBA16F:
 		format = GL_RGBA;
-		dataType = GL_FLOAT;
+		dataType = GL_HALF_FLOAT;
 		texFormat = cmft::TextureFormat::RGBA16F;
 		break;
 	case GL_RGBA32F:
@@ -76,13 +79,11 @@ cmft::Image textureCubemapToImage( const ci::gl::TextureCubeMapRef &cubemap )
 	cmft::Image faceList[6];
 	gl::ScopedTextureBind scopedTex( cubemap );
 	for( int face = 0 ; face < 6; ++face ) {
-		cmft::imageCreate( faceList[face], cubemap->getWidth(), cubemap->getHeight(), 0x000000ff, 1, 1, texFormat );
+		cmft::imageCreate( faceList[face], cubemap->getWidth(), cubemap->getHeight(), 0x0, 1, 1, texFormat );
 		glGetTexImage( GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, format, dataType, faceList[face].m_data );
 	}
 	
-	cmft::Image img;
-	cmft::imageCubemapFromFaceList( img, faceList );
-	return img;
+	cmft::imageCubemapFromFaceList( output, faceList );
 }
 
 void convertToCubemap( cmft::Image &image ) 
@@ -148,7 +149,7 @@ ci::gl::TextureCubeMapRef createTextureCubemap( cmft::Image &image )
 		break;
 	case cmft::TextureFormat::RGB16F:
 		format = GL_RGB;
-		dataType = GL_FLOAT;
+		dataType = GL_HALF_FLOAT;
 		texFormat.setInternalFormat( GL_RGB16F );
 		break;
 	case cmft::TextureFormat::RGB32F:
@@ -173,7 +174,7 @@ ci::gl::TextureCubeMapRef createTextureCubemap( cmft::Image &image )
 		break;
 	case cmft::TextureFormat::RGBA16F:
 		format = GL_RGBA;
-		dataType = GL_FLOAT;
+		dataType = GL_HALF_FLOAT;
 		texFormat.setInternalFormat( GL_RGBA16F );
 		break;
 	case cmft::TextureFormat::RGBA32F:
@@ -262,26 +263,33 @@ RadianceFilterOptions& RadianceFilterOptions::excludeBase( bool exclude )
 	return *this;
 }
 
-cmft::Image createPmrem( cmft::Image &input, uint32_t dstFaceSize, const RadianceFilterOptions &options )
+namespace {
+	void loadCl()
+	{
+		static bool loaded = false;
+		if( ! loaded ) {
+			bx::clLoad();
+			cmft::clPrintDevices();
+			app::App::get()->getSignalCleanup().connect( []() {
+				bx::clUnload();
+			} );
+			loaded = true;
+		}
+	}
+}
+
+bool createPmrem( cmft::Image &input, cmft::Image &output, uint32_t dstFaceSize, const RadianceFilterOptions &options )
 {
 	// prepare input / output
 	if( ! cmft::imageIsCubemap( input ) ) {
 		convertToCubemap( input );
 	}
-	cmft::Image output;	
 	cmft::imageCreate( output, dstFaceSize, dstFaceSize, 0xff0000ff, 7, 6, cmft::TextureFormat::RGBA32F );
 
 	// create the opencl context
-	cmft::ClContext clContext;
-		
-	int32_t clLoaded = bx::clLoad();
-	if( clLoaded ) {
-		cmft::clPrintDevices();
-		clContext.init( CMFT_CL_VENDOR_ANY_GPU, CMFT_CL_DEVICE_TYPE_GPU );
-	}
-	else {
-		app::console() << "Problem initializing OpenCL Context." << endl;
-	}
+	auto clContext = make_unique<cmft::ClContext>();
+	loadCl();
+	clContext->init( CMFT_CL_VENDOR_ANY_GPU, CMFT_CL_DEVICE_TYPE_GPU );
 
 	if( input.m_width != dstFaceSize ) {
 		cmft::imageResize( input, dstFaceSize );
@@ -289,28 +297,39 @@ cmft::Image createPmrem( cmft::Image &input, uint32_t dstFaceSize, const Radianc
 
 	// apply the filter
 	cmft::imageApplyGamma( input, options.mGammaInput );
-	cmft::imageRadianceFilter( output, dstFaceSize, cmft::LightingModel::BlinnBrdf, options.mExcludeBase, options.mMipCount, options.mGlossScale, options.mGlossBias, input, options.mEdgeFixup, options.mNumCpuProcessingThreads, &clContext );
+	cmft::imageRadianceFilter( output, dstFaceSize, cmft::LightingModel::BlinnBrdf, options.mExcludeBase, options.mMipCount, options.mGlossScale, options.mGlossBias, input, options.mEdgeFixup, options.mNumCpuProcessingThreads, clContext.get() );
 	cmft::imageApplyGamma( output, options.mGammaOutput );
 		
 	// Release OpenCL context and image memory
-	clContext.destroy();
-	if( clLoaded ) {
-		bx::clUnload();
-	}
-	
-	return output;
+	clContext->destroy();
+	clContext.reset();
+
+	return true;//filtered;
+}
+gl::TextureCubeMapRef createPmrem( cmft::Image &input, uint32_t dstFaceSize, const RadianceFilterOptions &options )
+{
+	// prepare and generate output
+	cmft::Image output;	
+	createPmrem( input, output, dstFaceSize, options );
+
+	// generate the opengl cubemap texture
+	auto outputTex = createTextureCubemap( output );
+
+	// release image memory
+	cmft::imageUnload( output );
+
+	return outputTex;
 }
 
 ci::gl::TextureCubeMapRef createPmrem( const ci::Surface &source, uint32_t dstFaceSize, const RadianceFilterOptions &options )
 {
-	auto input = surfaceToImage( source );
-	auto output = createPmrem( input, dstFaceSize, options );
+	cmft::Image input;
+	surfaceToImage( source, input );
 	
 	// generate the opengl cubemap texture
-	auto outputTex = createTextureCubemap( output ); 
+	auto outputTex = createPmrem( input, dstFaceSize, options );
 	
 	// Release output image memory
-	cmft::imageUnload( output );
 	cmft::imageUnload( input );
 
 	return outputTex;
@@ -334,8 +353,8 @@ ci::gl::TextureCubeMapRef createPmrem( const ci::fs::path &filePath, uint32_t ds
 		if( ! imageLoaded ) {
 			app::console() << "Problem loading Image" << endl;
 		}
-
-		output = createPmrem( input, dstFaceSize, options );
+		
+		createPmrem( input, output, dstFaceSize, options );
 		cmft::imageUnload( input );
 		
 		// save results if caching is enabled
@@ -361,33 +380,45 @@ IrradianceFilterOptions& IrradianceFilterOptions::gammaCorrection( float gammaIn
 	return *this;
 }
 
-cmft::Image createIem( cmft::Image &input, uint32_t dstFaceSize, const IrradianceFilterOptions &options )
+bool createIem( cmft::Image &input, cmft::Image &output, uint32_t dstFaceSize, const IrradianceFilterOptions &options )
 {	
 	// prepare input / output
 	if( ! cmft::imageIsCubemap( input ) ) {
 		convertToCubemap( input );
 	}
-	cmft::Image output;
 	cmft::imageCreate( output, dstFaceSize, dstFaceSize, 0xff0000ff, 1, 6, cmft::TextureFormat::RGB32F );
 
 	// apply the filter
 	cmft::imageApplyGamma( input, options.mGammaInput );
-	cmft::imageIrradianceFilterSh( output, dstFaceSize, input );
+	bool filtered = cmft::imageIrradianceFilterSh( output, dstFaceSize, input );
 	cmft::imageApplyGamma( output, options.mGammaOutput );
 
-	return output;
+	return filtered;
 }
+ci::gl::TextureCubeMapRef createIem( cmft::Image &input, uint32_t dstFaceSize, const IrradianceFilterOptions &options )
+{	
+	// generate output
+	cmft::Image output;
+	createIem( input, output, dstFaceSize, options );
 
-ci::gl::TextureCubeMapRef createIem( const ci::Surface &source, uint32_t dstFaceSize, const IrradianceFilterOptions &options )
-{
-	auto input = surfaceToImage( source );
-	auto output = createIem( input, dstFaceSize, options );
-	
 	// generate the opengl cubemap texture
 	auto outputTex = createTextureCubemap( output );
 
 	// release image memory
 	cmft::imageUnload( output );
+
+	return outputTex;
+}
+
+ci::gl::TextureCubeMapRef createIem( const ci::Surface &source, uint32_t dstFaceSize, const IrradianceFilterOptions &options )
+{
+	cmft::Image input;
+	surfaceToImage( source, input );
+
+	// generate the opengl cubemap texture
+	auto outputTex = createIem( input, dstFaceSize, options );
+
+	// release image memory
 	cmft::imageUnload( input );
 	
 	return outputTex;
@@ -412,7 +443,8 @@ ci::gl::TextureCubeMapRef createIem( const ci::fs::path &filePath, uint32_t dstF
 		if( ! imageLoaded ) {
 			app::console() << "Problem loading Image" << endl;
 		}
-		output = createIem( input, dstFaceSize, options );
+
+		createIem( input, output, dstFaceSize, options );
 
 		// save results if caching is enabled
 		if( cacheEnabled ) {
@@ -441,8 +473,9 @@ namespace {
 		std::vector<char> buf( 1 + std::vsnprintf( nullptr, 0, format, args ) );
 		va_end( args );
 		std::vsnprintf( buf.data(), buf.size(), format, args2 );
+		string output = string( buf.begin(), buf.end() );
+		app::console() << output << endl;
 		va_end(args2);
-		app::console() << string( buf.begin(), buf.end() ) << endl;
 		return 1;
 	}
 } // anonymous namespace

@@ -7,11 +7,11 @@
 namespace cmft {
 
 //! Converts a ci::Surface \a surface to a cmft::Image
-cmft::Image surfaceToImage( const ci::Surface &surface );
+void surfaceToImage( const ci::Surface &surface, cmft::Image &output );
 //! Converts a ci::gl::TextureCubeMap \a surface to a cmft::Image
-cmft::Image textureCubemapToImage( const ci::gl::TextureCubeMapRef &cubemap );
+void textureCubemapToImage( const ci::gl::TextureCubeMapRef &cubemap, cmft::Image &output );
 //! Converts a cmft::Image \a image to a Cubemap cmft::Image
-void		convertToCubemap( cmft::Image &image );
+void convertToCubemap( cmft::Image &image );
 
 //! Creates a ci::gl::TextureCubeMapRef from a Image \a image
 ci::gl::TextureCubeMapRef	createTextureCubemap( cmft::Image &image );
@@ -19,7 +19,7 @@ ci::gl::TextureCubeMapRef	createTextureCubemap( cmft::Image &image );
 ci::gl::TextureCubeMapRef	createTextureCubemap( const ci::fs::path &filePath );
 
 struct RadianceFilterOptions {
-	RadianceFilterOptions() : mLightingModel( LightingModel::BlinnBrdf ), mEdgeFixup( EdgeFixup::None ), mMipCount( 7 ), mGlossScale( 10 ), mGlossBias( 3 ), mNumCpuProcessingThreads( 8 ), mExcludeBase( false ), mGammaInput( 1.0f ), mGammaOutput( 1.0f ) {}
+	RadianceFilterOptions() : mLightingModel( LightingModel::BlinnBrdf ), mEdgeFixup( EdgeFixup::None ), mMipCount( 7 ), mGlossScale( 10 ), mGlossBias( 3 ), mNumCpuProcessingThreads( 0 ), mExcludeBase( false ), mGammaInput( 1.0f ), mGammaOutput( 1.0f ) {}
 
 	//! Sets the gamma correction applied to the input and output of the radiance filter
 	RadianceFilterOptions& gammaCorrection( float gammaInput, float gammaOutput );
@@ -45,8 +45,10 @@ struct RadianceFilterOptions {
 	uint8_t				mMipCount, mGlossScale, mGlossBias, mNumCpuProcessingThreads; 
 };
 
+//! Creates a Prefiltered Mipmapped Radiance Environment Map from a cmft::Image \a input to a cmft::Image \a output
+bool						createPmrem( cmft::Image &input, cmft::Image &output, uint32_t dstFaceSize, const RadianceFilterOptions &options = RadianceFilterOptions() );
 //! Creates a Prefiltered Mipmapped Radiance Environment Map from a cmft::Image \a input
-cmft::Image					createPmrem( cmft::Image &input, uint32_t dstFaceSize, const RadianceFilterOptions &options );
+ci::gl::TextureCubeMapRef	createPmrem( cmft::Image &input, uint32_t dstFaceSize, const RadianceFilterOptions &options = RadianceFilterOptions() );
 //! Creates a Prefiltered Mipmapped Radiance Environment Map from a ci::Surface \a source
 ci::gl::TextureCubeMapRef	createPmrem( const ci::Surface &source, uint32_t dstFaceSize, const RadianceFilterOptions &options = RadianceFilterOptions() );
 //! Creates a Prefiltered Mipmapped Radiance Environment Map from a cubemap image at \a filePath
@@ -62,8 +64,10 @@ struct IrradianceFilterOptions {
 	float				mGammaInput, mGammaOutput;
 };
 
+//! Creates a Prefiltered Mipmapped Radiance Environment Map from a cmft::Image \a input to cmft::Image \a output
+bool						createIem( cmft::Image &input, cmft::Image &output, uint32_t dstFaceSize, const IrradianceFilterOptions &options = IrradianceFilterOptions() );
 //! Creates a Prefiltered Mipmapped Radiance Environment Map from a cmft::Image \a input
-cmft::Image					createIem( cmft::Image &input, uint32_t dstFaceSize, const IrradianceFilterOptions &options = IrradianceFilterOptions() );
+ci::gl::TextureCubeMapRef	createIem( cmft::Image &input, uint32_t dstFaceSize, const IrradianceFilterOptions &options = IrradianceFilterOptions() );
 //! Creates a Prefiltered Mipmapped Radiance Environment Map from a ci::Surface \a source
 ci::gl::TextureCubeMapRef	createIem( const ci::Surface &source, uint32_t dstFaceSize, const IrradianceFilterOptions &options = IrradianceFilterOptions() );
 //! Creates a Prefiltered Mipmapped Radiance Environment Map from a cubemap image at \a filePath
