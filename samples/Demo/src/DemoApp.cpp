@@ -5,8 +5,6 @@
 
 #include "CinderImGui.h"
 #include "CinderCmft.h"
-//#include "NvidiaEnablement.h"
-#include "Watchdog.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -43,10 +41,14 @@ mShowOriginal( true )
 	mCamera.lookAt( vec3( 3.0f ), vec3( 0.0f ) );
 	mCameraUi = CameraUi( &mCamera, getWindow() );
 	
-	wd::watch( "*.frag", [this]( const fs::path &path ) { try {
+	try {
 		mModel = gl::Batch::create( geom::Sphere().subdivisions( 64 ), gl::GlslProg::create( loadAsset( "shader.vert" ), loadAsset( "shader.frag" ) ) );
 		mSkyBox = gl::Batch::create( geom::Cube().size( vec3( 100.0f ) ), gl::GlslProg::create( loadAsset( "skybox.vert" ), loadAsset( "skybox.frag" ) ) );
-	} catch( gl::GlslProgExc exc ) { app::console() << exc.what() << endl; } } );
+	} 
+	catch( gl::GlslProgExc exc ) 
+	{ 
+		app::console() << exc.what() << endl; 
+	}
 	
 	// connect cmft output to cinder's console
 	cmft::connectConsole( true, true );
@@ -58,6 +60,7 @@ mShowOriginal( true )
 	mEm				= cmft::createTextureCubemap( imgPath );
 	mPmrem			= cmft::createPmrem( imgPath, 256 );
 	mIem			= cmft::createIem( imgPath, 64 );
+	
 
 	// load material textures
 	auto texFormat	= gl::Texture2d::Format().mipmap().minFilter( GL_LINEAR_MIPMAP_LINEAR ).magFilter( GL_LINEAR );
@@ -103,7 +106,7 @@ void DemoApp::draw()
 	gl::ScopedTextureBind scopedTex6( mBaseColor, 6 );
 	
 
-	// render the teapot
+	// render the test model
 	if( mModel ) {
 		mModel->getGlslProg()->uniform( "uPmremSampler", 0 );
 		mModel->getGlslProg()->uniform( "uIemSampler", 1 );
