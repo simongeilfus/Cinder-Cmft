@@ -45,3 +45,8 @@ cmft::imageUnload( output );
 Screenshots from the demo app (material made with Substance Designer and HDR Envmaps from [NoEmotionHDRs](http://noemotionhdrs.net)) :
 
 ![Image](/res/demo_screenshots.jpg)
+
+
+Screenshots from custom environment sample :
+
+![Image](/res/custom_screenshots.jpg)
