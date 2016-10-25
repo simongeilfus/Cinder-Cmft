@@ -83,9 +83,9 @@ void main( void )
     // sample the environment maps
 	const float mipCount 	= 7.0;
 	float mip 				= mipCount - 1.0 - ( 1.0 - log2( roughness ) );
-	vec3 fresnel 			= fresnel( specularColor, NoV, 1.0 - roughness );
-	vec3 radiance   		= fresnel * pow( textureLod( uPmremSampler, R, mip ).xyz, vec3( 1.0 ) );
-	vec3 irradiance 		= diffuseColor * pow( texture( uIemSampler, vNormal ).xyz, vec3( 1.0 ) );
+	vec3 fresnel 			= fresnel( specularColor, NoV, 1.0 - ( roughness * roughness ) );
+	vec3 radiance   		= fresnel * textureLod( uPmremSampler, R, mip ).xyz;
+	vec3 irradiance 		= diffuseColor * texture( uIemSampler, vNormal ).xyz;
 	vec3 color 				= irradiance + radiance;
 
 	// tone-mapping and gamma correction
