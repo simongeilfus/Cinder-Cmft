@@ -35,7 +35,7 @@ struct RadianceFilterOptions {
 	RadianceFilterOptions& glossBias( uint8_t bias ); 
 	//! Sets the number of cpu processing threads used by the radiance filter
 	RadianceFilterOptions& numCpuProcessingThreads( uint8_t numThreads ); 
-	//! Sets excludeBase filter param?
+	//! Sets whether the first level of the output should be filtered or left untouched
 	RadianceFilterOptions& excludeBase( bool exclude );
 
 	bool				mExcludeBase;
